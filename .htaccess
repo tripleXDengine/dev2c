@@ -1,0 +1,39 @@
+
+# BEGIN WordPress
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /wordpress/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /wordpress/index.php [L]
+</IfModule>
+
+# END WordPress
+
+<Files xmlrpc.php>
+order allow,deny
+deny from all
+</Files>
+
+<Files wp-config.php>
+order allow,deny
+deny from all
+</Files>
+
+# Hide admin URL start
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !^(.*)admin-ajax\.php
+RewriteCond %{HTTP_REFERER} !^(.*)2c/wp-admin
+RewriteCond %{HTTP_REFERER} !^(.*)2c/wp-login\.php
+RewriteCond %{QUERY_STRING} !^fdnjhbpjdfnmcz
+RewriteCond %{QUERY_STRING} !^action=logout
+RewriteCond %{QUERY_STRING} !^action=rp
+RewriteCond %{QUERY_STRING} !^action=postpass
+RewriteCond %{HTTP_COOKIE} !^.*wordpress_logged_in_.*$
+RewriteRule ^.*wp-admin/?|^.*wp-login\.php/not_found [R,L]
+RewriteCond %{QUERY_STRING} ^loggedout=true
+RewriteRule ^$ /wp-login.php?fdnjhbpjdfnmcz[R,L]
+</IfModule>
+# Hide admin URL end 
